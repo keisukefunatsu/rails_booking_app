@@ -43,8 +43,8 @@ FactoryBot.define do
       )
       space = Space.create(
         group_id: group.id,
-        start_at: "",
-        end_at: "",
+        start_at: DateTime.now,
+        end_at: DateTime.now + 1.hour,
         note: "時間厳守で集まってくださいね^^;"
       )
     end
@@ -72,8 +72,8 @@ FactoryBot.define do
       )
       space = Space.create(
         group_id: group.id,
-        start_at: "",
-        end_at: "",
+        start_at: DateTime.now,
+        end_at: DateTime.now + 1.hour,
         note: "時間厳守で集まってくださいね^^;"
       )
     end
