@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :groups
+  resources :members_roles
+  resources :reservations
+  resources :members
+  resources :spaces
   root :to => 'home#index'
   resources :roles
   resources :users
