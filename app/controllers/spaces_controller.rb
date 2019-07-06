@@ -4,7 +4,7 @@ class SpacesController < ApplicationController
   # GET /spaces
   # GET /spaces.json
   def index
-    @spaces = Space.all
+    render json: @spaces = Space.all
   end
 
   # GET /spaces/1

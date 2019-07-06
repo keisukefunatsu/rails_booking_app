@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
+  resources :member_roles
   resources :groups
-  resources :members_roles
   resources :reservations
   resources :members
   resources :spaces
