@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
-  before_action :authenticate_api
+  before_action :authenticate_api, only: [:index, :show, :update, :destroy]
   before_action :set_user, only: [:show, :update, :destroy]
 
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @user = User.find(@current_user.id)
   end
 
   # GET /users/1
@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render :show, status: :created, location: @user
+      render json: @user, status: :created, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -29,7 +29,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     if @user.update(user_params)
-      render :show, status: :ok, location: @user
+      render json: @user, status: :ok, location: @user
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -49,6 +49,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :password_digest, :token)
+      params.require(:user).permit(:name, :email, :password, :password_confirmation, :admin)
     end
 end

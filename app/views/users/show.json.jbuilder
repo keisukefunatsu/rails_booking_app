@@ -1,1 +1,5 @@
-json.partial! "users/user", user: @user
+json.user do
+    @user.id
+    @user.name
+    @user.email
+end
