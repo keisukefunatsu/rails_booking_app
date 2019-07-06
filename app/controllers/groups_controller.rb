@@ -17,7 +17,7 @@ class GroupsController < ApplicationController
   # POST /groups.json
   def create
     unless params[:group][:user_id].to_i == @current_user.id
-      return render json: { message: 'You are not permitted this performance.' }, status: :forbidden
+      return render json: { message: 'You are not permitted to perform this operation.' }, status: :forbidden
     end
     @group = Group.new(group_params)
     if @group.save

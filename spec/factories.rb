@@ -36,10 +36,16 @@ FactoryBot.define do
     password { password }
     password_confirmation { password }
     after(:create) do |user|
-      Group.create(
+      group = Group.create(
         user_id: user.id,
         name: "User Group",
         note: "Users Note"
+      )
+      space = Space.create(
+        group_id: group.id,
+        start_at: "",
+        end_at: "",
+        note: "時間厳守で集まってくださいね^^;"
       )
     end
   end
@@ -59,10 +65,16 @@ FactoryBot.define do
     password { password }
     password_confirmation { password }
     after(:create) do |user|
-      Group.create(
+      group = Group.create(
         user_id: user.id,
         name: "Other User Group",
         note: "Other Users Note"
+      )
+      space = Space.create(
+        group_id: group.id,
+        start_at: "",
+        end_at: "",
+        note: "時間厳守で集まってくださいね^^;"
       )
     end
   end

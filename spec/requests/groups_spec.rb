@@ -68,7 +68,6 @@ RSpec.describe "Groups", type: :request do
     it "can delete group" do
       group = Group.find_by(user_id: login_user.id)
       expect{ delete group_path(group.id), headers: { Authorization: auth_token } }.to change(Group, :count).by(-1)
-      pp response.body
       expect(response).to have_http_status(204)
     end
   end
