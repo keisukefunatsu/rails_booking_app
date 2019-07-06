@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe UsersController, type: :request do
 
   include_context 'auth_token'
-  describe "GET #index" do
-    it "returns http success" do
+  describe "index" do
+    it "returns http success code" do
       get '/users.json', headers: {Authorization: auth_token}
       expect(response).to have_http_status(:success)
     end
@@ -16,7 +16,7 @@ RSpec.describe UsersController, type: :request do
     end
   end
 
-  describe "POST #create" do
+  describe "create" do
     it "can create user" do
       user_params = {
         user: 
@@ -32,7 +32,7 @@ RSpec.describe UsersController, type: :request do
     end
   end
   
-  describe "POST #edit" do
+  describe "edit" do
     it "can edit user" do
       user_params = {
         user: 
@@ -40,12 +40,34 @@ RSpec.describe UsersController, type: :request do
             email: 'some@email.com', 
             name: 'edited user', 
             password: 'password1234',
-            password_confirmation: 'password1234',
-            admin: true
+            password_confirmation: 'password1234'
           }
       }
       put "/users/#{login_user.id}.json", headers: {Authorization: auth_token}, params: user_params
       expect(response).to have_http_status(:success)
+    end
+    it 'can not edit other user'  do
+      user_params = {
+        user: 
+          {
+            email: 'some@email.com', 
+            name: 'edited user', 
+            password: 'password1234',
+            password_confirmation: 'password1234'
+          }
+      }
+      put "/users/#{other_user.id}.json", headers: {Authorization: auth_token}, params: user_params
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
+  describe "delete" do
+    it "can not delete other user" do
+      delete "/users/#{other_user.id}.json", headers: {Authorization: auth_token}
+      expect(response).to have_http_status(:forbidden)
+    end
+    it "can delete user" do
+      expect{ delete "/users/#{login_user.id}.json", headers: {Authorization: auth_token}}.to change(User, :count).by(-1)
+      expect(response).to have_http_status(204)
     end
   end
 end

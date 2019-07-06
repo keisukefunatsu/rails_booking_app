@@ -5,12 +5,13 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @user = User.find(@current_user.id)
+    @user = @current_user
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
+    @user = @current_user
   end
 
   # POST /users
@@ -28,6 +29,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
+    return render json: { message: 'You are not permitted this operation.' }, status: :forbidden unless @user == @current_user 
     if @user.update(user_params)
       render json: @user, status: :ok, location: @user
     else
@@ -38,7 +40,12 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
+    return render json: { message: 'You are not permitted this operation.' }, status: :forbidden unless @user == @current_user 
+    if @user.destroy
+      render json: @user, status: 204
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
   end
 
   private
