@@ -1,6 +1,6 @@
 class MembersController < ApplicationController
   before_action :set_member, only: [:show, :update, :destroy]
-
+  before_action :authenticate_api, only: [:index, :show, :create, :update, :destroy]
   # GET /members
   # GET /members.json
   def index
@@ -15,10 +15,14 @@ class MembersController < ApplicationController
   # POST /members
   # POST /members.json
   def create
+    group = Group.find(params[:member][:group_id])
+    if @current_user.id != group.user_id 
+      return render json: { message: "You are not permitted to perform this operation." }, status: :forbidden
+    end
     @member = Member.new(member_params)
 
     if @member.save
-      render :show, status: :created, location: @member
+      render json: @member, status: :created
     else
       render json: @member.errors, status: :unprocessable_entity
     end
@@ -27,8 +31,11 @@ class MembersController < ApplicationController
   # PATCH/PUT /members/1
   # PATCH/PUT /members/1.json
   def update
+    if @current_user.id != @member.user_id
+      return render json: { message: "You are not permitted to perform this operation." }, status: :forbidden
+    end
     if @member.update(member_params)
-      render :show, status: :ok, location: @member
+      render json: @member, status: :ok
     else
       render json: @member.errors, status: :unprocessable_entity
     end
@@ -37,7 +44,13 @@ class MembersController < ApplicationController
   # DELETE /members/1
   # DELETE /members/1.json
   def destroy
-    @member.destroy
+    group = Group.find(params[:group_id])
+    unless @current_user.id == @member.user_id || group.user_id == @current_user.id
+      return render json: { message: "You are not permitted to perform this operation." }, status: :forbidden
+    end
+    if @member.destroy
+      render json: { message: 'successfully deleted' }, status: 204
+    end
   end
 
   private

@@ -1,10 +1,4 @@
 FactoryBot.define do
-  # factory :group do
-  #   user_id { 1 }
-  #   name { "MyString" }
-  #   note { "MyText" }
-  # end
-
   factory :member_role do
     member { nil }
     role { nil }
@@ -35,11 +29,16 @@ FactoryBot.define do
     email { Faker::Internet.free_email }
     password { password }
     password_confirmation { password }
+    
     after(:create) do |user|
       group = Group.create(
         user_id: user.id,
         name: "User Group",
         note: "Users Note"
+      )
+      member = Member.create(
+        user_id: user.id,
+        group_id: group.id,
       )
       space = Space.create(
         group_id: group.id,
@@ -56,6 +55,7 @@ FactoryBot.define do
     email { Faker::Internet.free_email }
     password { password }
     password_confirmation { password }
+    admin { true }
   end
   
   factory :other_user, class: User do
@@ -69,6 +69,11 @@ FactoryBot.define do
         user_id: user.id,
         name: "Other User Group",
         note: "Other Users Note"
+      )
+      member = Member.create(
+        user_id: user.id,
+        group_id: group.id,
+        admin: true
       )
       space = Space.create(
         group_id: group.id,

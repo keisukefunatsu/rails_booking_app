@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
   resources :member_roles
-  resources :groups
+  resources :groups do
+    resources :members
+  end
   resources :reservations
-  resources :members
+  
   resources :spaces
   root :to => 'home#index'
   resources :roles
