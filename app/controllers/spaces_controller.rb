@@ -15,13 +15,13 @@ class SpacesController < ApplicationController
   # POST /spaces
   # POST /spaces.json
   def create
-    group = Group.find(params[:space][:group_id])
+    group = Group.find(params[:group_id])
     unless @current_user.id == group.user_id
       return render json: { message: "You are not permitted to perform this operation." }, status: :forbidden
     end
     @space = Space.new(space_params)
     if @space.save
-      render json: @space, status: :created, location: @space
+      render json: @space, status: :created
     else
       render json: @space.errors, status: :unprocessable_entity
     end
@@ -30,12 +30,12 @@ class SpacesController < ApplicationController
   # PATCH/PUT /spaces/1
   # PATCH/PUT /spaces/1.json
   def update
-    group = Group.find(@space.group_id)
+    group = Group.find(params[:group_id])
     unless @current_user.id == group.user_id
       return render json: { message: "You are not permitted to perform this operation." }, status: :forbidden
     end
     if @space.update(space_params)
-      render json: @space, status: :created, location: @space
+      render json: @space, status: :created
     else
       render json: @space.errors, status: :unprocessable_entity
     end
@@ -44,7 +44,7 @@ class SpacesController < ApplicationController
   # DELETE /spaces/1
   # DELETE /spaces/1.json
   def destroy
-    group = Group.find(@space.group_id)
+    group = Group.find(params[:group_id])
     unless @current_user.id == group.user_id
       return render json: { message: "You are not permitted to perform this operation." }, status: :forbidden
     end
