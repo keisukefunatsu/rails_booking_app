@@ -2,8 +2,8 @@ class CreateReservations < ActiveRecord::Migration[6.0]
   def change
     create_table :reservations do |t|
       t.references :space, null: false, foreign_key: true
-      t.datetime :start_at
-      t.datetime :end_at
+      t.datetime :start_at, null: false
+      t.datetime :end_at, null: false
       t.text :note
 
       t.timestamps

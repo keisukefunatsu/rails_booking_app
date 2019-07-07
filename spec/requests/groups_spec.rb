@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "Groups", type: :request do
   include_context 'auth_token'
   describe "GET /groups" do
-    it "works! (now write some real specs)" do
+    it "returns 200" do
       get groups_path, headers: {Authorization: auth_token}
       expect(response).to have_http_status(200)
     end
