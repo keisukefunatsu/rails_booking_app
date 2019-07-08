@@ -71,13 +71,13 @@ RSpec.describe "Spaces", type: :request do
     it "can not delete other user's space" do
       group = Group.find_by(user_id: other_user.id)
       space = Space.find_by(group_id: group.id)
-      delete group_space_path(space.id, group.id), headers: { Authorization: auth_token }
+      delete group_space_path(group.id, space.id), headers: { Authorization: auth_token }
       expect(response).to have_http_status(:forbidden)
     end
     it "can delete space" do
       group = Group.find_by(user_id: login_user.id)
       space = Space.find_by(group_id: group.id)
-      expect{ delete group_space_path(space.id, group.id), headers: { Authorization: auth_token } }.to change(Space, :count).by(-1)
+      expect{ delete group_space_path(group.id, space.id), headers: { Authorization: auth_token } }.to change(Space, :count).by(-1)
       expect(response).to have_http_status(204)
     end
   end

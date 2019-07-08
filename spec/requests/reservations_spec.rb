@@ -11,7 +11,25 @@ RSpec.describe "Reservations", type: :request do
       get space_reservations_path(space.id), headers: { Authorization: auth_token }
       expect(response).to have_http_status(200)
     end
-    it "can see " do
+    it "can see own reserveation not others(group owner)" do
+      get space_reservations_path(space.id), headers: { Authorization: auth_token }
+      @reservations = JSON.parse(response.body)
+      @reservation_ids = @reservations.map{|res| res['member_id']}
+      other_id_list = []
+      other_id_list = @reservation_ids.map{|id| id if id != member.id  }
+      # remove nil
+      expect(other_id_list.compact!.empty?).to eq(true)
+    end
+    it "can see own reserveation not others(normal user)" do
+      group = other_user.groups.first
+      space = Space.find_by(group_id: group.id)
+      member = Member.find_by(user_id: other_user.id)
+      get space_reservations_path(space.id), headers: { Authorization: other_auth_token }
+      @reservations = JSON.parse(response.body)
+      @reservation_ids = @reservations.map{|res| res['member_id']}
+      other_id_list = []
+      other_id_list = @reservation_ids.map{|id| id if id != member.id  }
+      expect(other_id_list.compact!.empty?).to eq(true)
     end
   end
   describe "create" do

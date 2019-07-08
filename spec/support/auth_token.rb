@@ -10,4 +10,13 @@ shared_context 'auth_token' do
       { Authorization: JSON.parse(response.body)['auth_token'] } 
     }
   end
+  before do 
+    post '/authenticate', params: {email: other_user.email, password: other_user.password} 
+  end
+  let!(:other_auth_token) { JSON.parse(response.body)['auth_token'] } 
+  let!(:other_auth_header) do
+    { headers: 
+      { Authorization: JSON.parse(response.body)['auth_token'] } 
+    }
+  end
 end

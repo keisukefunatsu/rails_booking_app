@@ -8,12 +8,16 @@ class ReservationsController < ApplicationController
     space = Space.find(params[:space_id])
     group = Group.find(space.group_id)
     group_admin = User.find(group.user_id)
-    if @current_user == group_admin.id
+    member = Member.find_by(group_id: group.id, user_id: @current_user.id)
+    if @current_user.id == group_admin.id
       @reservations = Reservation.where(space_id: params[:space_id])
-    else
-      @reservations = Reservation.where(space_id: params[:space_id], member_id: @current_user.id)
+    elsif member
+      @reservations = Reservation.where(
+          space_id: params[:space_id], 
+          member_id: member.id
+        )
     end
-    render json: @reservations 
+    render json: @reservations
   end
 
   # GET /reservations/1
