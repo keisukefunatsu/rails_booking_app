@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   resources :groups do
     resources :members
     resources :spaces
+  end
+  resources :spaces do
     resources :reservations
   end
   root :to => 'home#index'

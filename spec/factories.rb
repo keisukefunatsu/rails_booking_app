@@ -20,7 +20,14 @@ FactoryBot.define do
         group_id: group.id,
         start_at: DateTime.now,
         end_at: DateTime.now + 1.hour,
-        note: "時間厳守で集まってくださいね^^;"
+        note: "Please gather on time!"
+      )
+      reservation = Reservation.create(
+        space_id: space.id,
+        member_id: member.id,
+        start_at: DateTime.now,
+        end_at: DateTime.now + 1.hour,
+        note: "I will join!"
       )
     end
   end
@@ -55,7 +62,14 @@ FactoryBot.define do
         group_id: group.id,
         start_at: DateTime.now,
         end_at: DateTime.now + 1.hour,
-        note: "時間厳守で集まってくださいね^^;"
+        note: "Please gather on time!"
+      )
+      reservation = Reservation.create(
+        space_id: space.id,
+        member_id: member.id,
+        start_at: DateTime.now,
+        end_at: DateTime.now + 1.hour,
+        note: "I will join!"
       )
     end
   end
