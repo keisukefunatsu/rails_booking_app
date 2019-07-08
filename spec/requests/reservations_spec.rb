@@ -11,6 +11,8 @@ RSpec.describe "Reservations", type: :request do
       get space_reservations_path(space.id), headers: { Authorization: auth_token }
       expect(response).to have_http_status(200)
     end
+    it "can see " do
+    end
   end
   describe "create" do
     it "can create reservation" do
@@ -24,7 +26,7 @@ RSpec.describe "Reservations", type: :request do
         }
       }
       
-      expect { post space_reservations_path(group.id), headers: { Authorization: auth_token }, params: reservation_params }.to change(Reservation, :count).by(1)
+      expect { post space_reservations_path(space.id), headers: { Authorization: auth_token }, params: reservation_params }.to change(Reservation, :count).by(1)
       expect(response).to have_http_status(:success)
     end
     it "can not create other user's reservation" do

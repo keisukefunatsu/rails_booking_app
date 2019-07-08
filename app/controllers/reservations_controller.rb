@@ -5,6 +5,14 @@ class ReservationsController < ApplicationController
   # GET /reservations
   # GET /reservations.json
   def index
+    space = Space.find(params[:space_id])
+    group = Group.find(space.group_id)
+    group_admin = User.find(group.user_id)
+    if @current_user == group_admin.id
+      @reservations = Reservation.where(space_id: params[:space_id])
+    else
+      @reservations = Reservation.where(space_id: params[:space_id], member_id: @current_user.id)
+    end
     render json: @reservations 
   end
 
