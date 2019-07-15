@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  get 'register/index'
+  # post 'register/index'
+  post 'register' => 'register#index'
+  post 'register/activate_account' => 'register#activate_account' 
   resources :member_roles
   resources :groups do
     resources :members
