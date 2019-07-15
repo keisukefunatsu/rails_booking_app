@@ -1,4 +1,8 @@
 FactoryBot.define do
+  factory :login_log do
+    token { "MyString" }
+  end
+
   factory :login_user, class: User do
     password = Faker::Internet.password(8)
     name { Faker::Name.last_name }

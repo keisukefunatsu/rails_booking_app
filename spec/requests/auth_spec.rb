@@ -14,7 +14,7 @@ describe "Login with post data", :type => :request do
   it 'fails to access with expired token' do
     travel_to 25.hours.from_now do
       get '/users.json', headers: { Authorization: auth_token }
-      expect(response).to have_http_status(:forbidden)
+      expect(response).to have_http_status(:unauthorized)
     end
   end
   
@@ -23,7 +23,7 @@ describe "Login with post data", :type => :request do
       sleep 1.second 
       post '/authenticate', params: {email: login_user.email, password: login_user.password} 
       get '/users.json', headers: { Authorization: auth_token }
-      expect(response).to have_http_status(:forbidden)
+      expect(response).to have_http_status(:unauthorized)
   end
   
   it 'can access with renewed token' do 
