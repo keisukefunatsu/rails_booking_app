@@ -19,11 +19,12 @@ describe "Login with post data", :type => :request do
   end
   
   it 'fails to access with old token' do
-      # to get different token
-      sleep 1.second 
+    # get different token
+    travel_to 1.hours.from_now do
       post '/authenticate', params: {email: login_user.email, password: login_user.password} 
       get '/users.json', headers: { Authorization: auth_token }
       expect(response).to have_http_status(:unauthorized)
+    end
   end
   
   it 'can access with renewed token' do 

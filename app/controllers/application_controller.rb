@@ -8,12 +8,13 @@ class ApplicationController < ActionController::API
         user_id = decoded_token['user_id']
         expire_at = decoded_token['expire_at']
         @current_user = User.find(user_id)
-        raise 'token is old' unless @current_user.auth_token == sent_token
+        current_token = @current_user.login_logs.last.auth_token
+        raise 'token is old' unless current_token == sent_token
         raise 'token expired' unless expire_at > Time.now 
       rescue
-        render status: 403, json: 
+        render status: 401, json: 
           {
-            'status' => 'forbidden', 
+            'status' => 'unauthorized', 
             'message' => 'Token is not valid or expired, please get token again' 
             
           }

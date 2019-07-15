@@ -11,7 +11,6 @@ RSpec.describe UsersController, type: :request do
     it "returns only login user" do
       get '/users.json', headers: {Authorization: auth_token}
       body = JSON.parse(response.body)
-      pp body
       expect(body['user']['id']).to eq(login_user.id)
       expect(body['user']['name']).to eq(login_user.name)
     end

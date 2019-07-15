@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'register/index'
   resources :member_roles
   resources :groups do
     resources :members
