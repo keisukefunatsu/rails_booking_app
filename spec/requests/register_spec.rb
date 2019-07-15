@@ -53,7 +53,7 @@ describe "Register index", :type => :request do
     user = User.find_by(email: 'activate_user@example.com')
     expect(user.activated).to eq(false)
     activation_token = user.activation_token
-    post '/register/activate_account', params: {
+    get '/register/activate_account', params: {
       register: {
         activation_token: activation_token
         }
