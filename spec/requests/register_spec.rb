@@ -12,7 +12,7 @@ describe "Register index", :type => :request do
       }
     }
     post '/register', params: register_params
-    expect(response).to have_http_status(:forbidden)
+    expect(response).to have_http_status(422)
   end
   it 'can register user' do
     register_params = {
@@ -35,7 +35,7 @@ describe "Register index", :type => :request do
       }
     }
     post '/register', params: register_params
-    expect(response).to have_http_status(:forbidden)
+    expect(response).to have_http_status(422)
   end
 end
 describe "Register index", :type => :request do

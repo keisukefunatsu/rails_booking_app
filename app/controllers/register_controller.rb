@@ -5,10 +5,10 @@ class RegisterController < ApplicationController
       if user.save
         render json: { status: 'ok', message: 'user successfully created' }, status: :ok
       else
-        render json: user.errors, status: :forbidden
+        render json: { status: 'unprocessable_entity', message: 'failed to create user', errors: user.errors }, status: :unprocessable_entity
       end
     else
-      render json: {status: 'forbidden', message: 'parameter missing'}, status: :forbidden
+      render json: {message: 'some parameters are missing'}, status: :unprocessable_entity
     end
   end
 
@@ -20,7 +20,7 @@ class RegisterController < ApplicationController
         render json: { status: 'ok', message: 'activated' }, status: :ok
       end
     rescue 
-      render json: { status: 'forbidden', message: 'something wrong' }, status: :forbidden
+      render json: { status: 'unprocessable_entity', message: 'something wrong' }, status: :unprocessable_entity
     end
   end
 
